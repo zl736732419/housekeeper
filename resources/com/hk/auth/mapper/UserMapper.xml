@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hk.auth.mapper.UserMapper" >
+	<sql id="selectUserDetailSql">
+		SELECT id, username, password, nickname, sex, age, tel, pic 
+			FROM USER 
+	</sql>
+	
+	<sql id="userFields">
+		username, password, nickname, sex, age, tel, pic
+	</sql>
+	
+	<sql id="selectUserCountSql">
+		SELECT count(id) FROM USER 
+	</sql>
+	
+	<sql id="selectInsertId">
+		SELECT LAST_INSERT_ID()
+	</sql>
+	
+	<sql id="queryUserWhere">
+		<where>
+			<if test="username != null">
+				and username like '%${username}%'
+			</if>
+			<if test="nickname != null">
+				and nickname like '%${nickname}%'
+			</if>
+			<if test="age != null">
+				and age = #{age}
+			</if>
+			<if test="sex != null">
+				and sex = #{sex}
+			</if>
+			<if test="tel != null">
+				and tel like '%${tel}%'
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="userPage">
+		<if test="first != null and pageSize != null">
+			limit #{first}, #{pageSize}
+		</if>
+	</sql>
+	
+	<select id="findById" parameterType="int" resultType="user">
+		<include refid="selectUserDetailSql"/>
+		<where>
+			and id = #{value}
+		</where>
+	</select>
+	
+	<select id="findByUsername" parameterType="string" resultType="user">
+		<include refid="selectUserDetailSql"/> 
+		where username=#{value} 
+	</select>
+	
+	<select id="findAll" resultType="user" parameterType="map">
+		<include refid="selectUserDetailSql"/>
+		<include refid="queryUserWhere"/>
+		<include refid="userPage"/>
+	</select>
+	
+	<select id="getCount" resultType="int" parameterType="map">
+		<include refid="selectUserCountSql"/>
+		<include refid="queryUserWhere"/>
+	</select>
+	
+	<insert id="save" parameterType="user">
+		INSERT INTO USER(<include refid="userFields"/>) 
+			VALUES(#{username}, #{password}, #{nickname}, #{sex}, #{age}, #{tel}, #{pic})
+		<!-- 获取保存后的userid -->
+		<selectKey keyColumn="id" keyProperty="id" order="AFTER" resultType="int">
+			<include refid="selectInsertId"/>
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterType="user">
+		UPDATE USER SET nickname=#{nickname}, sex=#{sex}, age=#{age}, tel=#{tel}, pic=#{pic}
+			WHERE id=#{id} 
+	</update>
+	
+	<delete id="deleteById" parameterType="int">
+		DELETE FROM USER WHERE id = #{value}
+	</delete>
+	
+	<delete id="deleteByIds" parameterType="string">
+		DELETE FROM USER WHERE id in (#{value})
+	</delete>
+	
+	
+	
+</mapper>

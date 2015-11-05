@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hk.logs.mapper.SysLogMapper" >
+	
+	<!-- 向日志表中插入一条记录 -->
+	<insert id="save" parameterType="sysLog">
+		insert into logs(user_id, username, log_info, model_name, method_name, ip, log_time)
+			values(#{userId}, #{username}, #{logInfo}, #{modelName}, #{methodName}, #{ip}, #{logTime})
+		<selectKey keyColumn="id" keyProperty="id" order="AFTER" resultType="int">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<update id="setUsersNullByUserIds" parameterType="string">
+		UPDATE LOGS SET user_id = NULL where user_id in (#{value})
+	</update>
+	
+</mapper>

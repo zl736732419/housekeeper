@@ -1,0 +1,43 @@
+/*小屏幕*/
+@media ( min-width :750px) {
+	#age_group {
+		display : none;
+	}
+	
+	.thumbnail {
+		height:150px;
+		margin-bottom:10px;
+	}
+}
+
+/*中屏幕*/
+@media ( min-width :970px) {
+	#age_group {
+		display : inline-block;
+	}
+	
+	.thumbnail {
+		height:200px;
+		margin-bottom:20px;
+	}
+}
+
+/*缩略图样式*/
+.select-btn {
+	display: block;
+	position:absolute;
+	right:20px;
+	top:4px;
+}
+
+.selected-icon {
+	display:block;
+	width:32px;
+	height:32px;
+	background-image: url(../../../images/selected.png)
+}
+
+.unselected-icon {
+	display : none;
+}
+

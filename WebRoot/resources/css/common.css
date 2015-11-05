@@ -1,0 +1,5 @@
+/*验证错误提示信息*/
+.error_msg {
+	font-size:10pt;
+	line-height:30px;
+}
